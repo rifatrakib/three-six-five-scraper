@@ -131,3 +131,4 @@ dmypy.json
 # sensitive user information
 curls/*.txt
 secrets/*.json
+data/*/*.json

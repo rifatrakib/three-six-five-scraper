@@ -1,4 +1,5 @@
 import json
+import os
 from datetime import datetime
 
 from itemadapter import ItemAdapter
@@ -14,8 +15,13 @@ class JSONPipeline:
         return pipeline
 
     def spider_opened(self, spider):
-        spider_name = spider.name.replace("_", "-")
-        self.file = open(f"data/{spider_name}.json", "w")
+        spider_name = spider.name
+
+        location = "data/base"
+        if not os.path.isdir(location):
+            os.mkdir(location)
+
+        self.file = open(f"{location}/{spider_name}-base.json", "w")
         header = "[\n"
         self.file.write(header)
 
@@ -24,14 +30,17 @@ class JSONPipeline:
         self.file.write(footer)
         self.file.close()
 
-        spider_name = spider.name.replace("_", "-")
-        with open(f"data/{spider_name}.json", "r") as reader:
+        spider_name = spider.name
+        with open(f"data/base/{spider_name}-base.json", "r") as reader:
             data = reader.read()
 
         data = data.rpartition(",")
         data = data[0] + data[-1]
-        with open(f"data/{spider_name}.json", "w") as writer:
-            writer.write(data)
+        data = json.loads(data)
+        with open(f"data/base/{spider_name}-base.json", "w") as writer:
+            writer.write(json.dumps(data, indent=4))
+
+        self.post_process(spider_name)
 
     def process_item(self, item, spider):
         data = ItemAdapter(item).asdict()
@@ -41,3 +50,22 @@ class JSONPipeline:
         line = json.dumps(data, indent=4) + ",\n"
         self.file.write(line)
         return item
+
+    def post_process(self, spider_name):
+        with open(f"data/base/{spider_name}-base.json", "r") as reader:
+            data = json.loads(reader.read())
+
+        location = f"data/{spider_name}"
+        if not os.path.isdir(location):
+            os.mkdir(location)
+
+        splits = {}
+        for doc in data:
+            key = doc["key"]
+            if key not in splits:
+                splits[key] = []
+            splits[key].append(doc)
+        print(splits.keys())
+        for split, split_data in splits.items():
+            with open(f"{location}/{split}.json", "w") as writer:
+                writer.write(json.dumps(split_data, indent=4))
