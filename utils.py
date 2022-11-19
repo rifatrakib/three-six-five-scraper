@@ -1,5 +1,7 @@
 import json
 import os
+import subprocess
+from pathlib import Path
 
 
 def prepare_headers_and_cookies(name):
@@ -26,10 +28,9 @@ def prepare_headers_and_cookies(name):
         writer.write(json.dumps(secrets, indent=4))
 
 
-modules = [
-    "courses",
-    "lessons",
-    "playbacks",
-]
-for module in modules:
-    prepare_headers_and_cookies(module)
+def run_spider(spider_name):
+    location = f"logs/{spider_name}"
+    Path(f"{location}").mkdir(parents=True, exist_ok=True)
+    logger = f"{location}/{spider_name}-logs.log"
+    command = f"scrapy crawl {spider_name} 2>&1 | tee {logger}"
+    subprocess.run(command, shell=True)
