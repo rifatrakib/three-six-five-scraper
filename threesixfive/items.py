@@ -126,3 +126,46 @@ class UpcomingCourse(BaseModel):
     name: str
     slug: str
     technology: str
+
+
+class DownloadableAsset(BaseModel):
+    name: str
+    file: str
+
+
+class VideoInfo(BaseModel):
+    duration: int
+    durationSeconds: float
+    extId: str
+    id: int
+    name: str
+    provider: str
+
+
+class Asset(BaseModel):
+    key: str = "asset"
+    assignment: Union[bool, None] = None
+    cases: Union[int, None] = None
+    completed: Union[bool, None] = None
+    course_name: str
+    chapter_id: int
+    chapter_name: str
+    chapter_order: int
+    downloadables: List[DownloadableAsset] = []
+    duration: Union[int, None] = None
+    free: bool
+    id: int
+    lectureId: Union[int, None] = None
+    name: str
+    order: Union[str, None] = None
+    practiceExam: Union[bool, None] = None
+    quiz: Union[bool, None] = None
+    questions: Union[int, None] = None
+    review: Union[bool, None] = None
+    section: int
+    slug: Union[str, None] = None
+    type: Union[str, None] = None
+    text: Union[str, None] = None
+    unlocked: Union[bool, None] = None
+    usefulOrNot: Union[bool, None] = None
+    video: Union[VideoInfo, bool, None] = None
