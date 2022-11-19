@@ -132,3 +132,4 @@ dmypy.json
 curls/*.txt
 secrets/*.json
 data/*/*.json
+logs/*/*/*.json

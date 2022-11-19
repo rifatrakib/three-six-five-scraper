@@ -1,3 +1,6 @@
+import json
+import os
+
 import scrapy
 
 from threesixfive.items import Course, Module, Page, Recommendation, UpcomingCourse
@@ -37,3 +40,10 @@ class CoursesSpider(scrapy.Spider):
 
         for upcoming_course in upcoming_courses:
             yield UpcomingCourse(**upcoming_course)
+
+        location = "logs/responses/courses"
+        if not os.path.isdir(location):
+            os.mkdir(location)
+
+        with open(f"{location}/courses.json") as writer:
+            writer.write(json.dumps(data, indent=4))
