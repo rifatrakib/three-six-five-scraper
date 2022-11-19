@@ -65,7 +65,7 @@ class JSONPipeline:
             if key not in splits:
                 splits[key] = []
             splits[key].append(doc)
-        print(splits.keys())
+
         for split, split_data in splits.items():
             with open(f"{location}/{split}.json", "w") as writer:
                 writer.write(json.dumps(split_data, indent=4))
