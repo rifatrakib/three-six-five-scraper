@@ -26,6 +26,10 @@ def prepare_headers_and_cookies(name):
         writer.write(json.dumps(secrets, indent=4))
 
 
-modules = ["courses", "lessons"]
+modules = [
+    "courses",
+    "lessons",
+    "playbacks",
+]
 for module in modules:
     prepare_headers_and_cookies(module)

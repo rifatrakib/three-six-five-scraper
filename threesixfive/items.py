@@ -1,7 +1,7 @@
 from datetime import datetime
 from typing import List, Union
 
-from pydantic import BaseModel
+from pydantic import BaseModel, HttpUrl
 
 
 class Instructor(BaseModel):
@@ -169,3 +169,21 @@ class Asset(BaseModel):
     unlocked: Union[bool, None] = None
     usefulOrNot: Union[bool, None] = None
     video: Union[VideoInfo, bool, None] = None
+
+
+class MediaSource(BaseModel):
+    key: str = "media"
+    course_name: str
+    chapter_name: str
+    lesson_name: str
+    avg_bitrate: Union[int, None] = None
+    codecs: Union[str, None] = None
+    container: Union[str, None] = None
+    duration: Union[int, None] = None
+    height: Union[int, None] = None
+    profiles: Union[str, None] = None
+    size: Union[int, None] = None
+    src: HttpUrl
+    type: Union[str, None] = None
+    width: Union[int, None] = None
+    subtitle: Union[HttpUrl, None] = None

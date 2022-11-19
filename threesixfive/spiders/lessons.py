@@ -20,18 +20,14 @@ class LessonsSpider(scrapy.Spider):
             slug = doc["slug"]
             urls.append(f"{self.base_url}/{slug}/player")
 
-        course_name = (
-            urls[0]
-            .replace(
-                "https://api.365datascience.com/courses/",
-                "",
-            )
-            .replace("/player", "")
-        )
         secrets = read_secrets(self.name)
         headers, cookies = secrets["headers"], secrets["cookies"]
 
-        for url in urls:
+        for doc in data:
+            slug = doc["slug"]
+            url = f"{self.base_url}/{slug}/player"
+            course_name = doc["name"]
+
             yield scrapy.Request(
                 url=url,
                 headers=headers,

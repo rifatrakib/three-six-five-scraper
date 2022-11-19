@@ -45,5 +45,5 @@ class CoursesSpider(scrapy.Spider):
         if not os.path.isdir(location):
             os.mkdir(location)
 
-        with open(f"{location}/courses.json") as writer:
+        with open(f"{location}/courses.json", "w") as writer:
             writer.write(json.dumps(data, indent=4))
