@@ -1,6 +1,6 @@
 import json
-import os
 from datetime import datetime
+from pathlib import Path
 
 from itemadapter import ItemAdapter
 from scrapy import signals
@@ -18,8 +18,7 @@ class JSONPipeline:
         spider_name = spider.name
 
         location = "data/base"
-        if not os.path.isdir(location):
-            os.mkdir(location)
+        Path(location).mkdir(parents=True, exist_ok=True)
 
         self.file = open(f"{location}/{spider_name}-base.json", "w")
         header = "[\n"
@@ -56,8 +55,7 @@ class JSONPipeline:
             data = json.loads(reader.read())
 
         location = f"data/{spider_name}"
-        if not os.path.isdir(location):
-            os.mkdir(location)
+        Path(location).mkdir(parents=True, exist_ok=True)
 
         splits = {}
         for doc in data:

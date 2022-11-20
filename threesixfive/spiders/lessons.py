@@ -1,10 +1,10 @@
 import json
-import os
+from pathlib import Path
 
 import scrapy
 
 from threesixfive.items import Asset
-from threesixfive.spiders.utils import read_secrets
+from threesixfive.spiders.utils import format_folder_and_file_name, read_secrets
 
 
 class LessonsSpider(scrapy.Spider):
@@ -61,9 +61,8 @@ class LessonsSpider(scrapy.Spider):
                 yield Asset(**asset)
 
         location = "logs/responses/lessons/"
-        if not os.path.isdir(location):
-            os.mkdir(location)
+        Path(location).mkdir(parents=True, exist_ok=True)
 
-        identifier = data["slug"]
+        identifier = format_folder_and_file_name(data["slug"])
         with open(f"{location}/{identifier}.json", "w") as writer:
             writer.write(json.dumps(data, indent=4))

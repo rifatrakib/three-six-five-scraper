@@ -1,5 +1,5 @@
 import json
-import os
+from pathlib import Path
 
 import scrapy
 
@@ -63,8 +63,7 @@ class PlaybacksSpider(scrapy.Spider):
             yield MediaSource(**source)
 
         location = "logs/responses/playbacks"
-        if not os.path.isdir(location):
-            os.mkdir(location)
+        Path(location).mkdir(parents=True, exist_ok=True)
 
         with open(f"{location}/playbacks.json", "w") as writer:
             writer.write(json.dumps(data, indent=4))

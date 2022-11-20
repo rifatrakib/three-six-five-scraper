@@ -1,7 +1,8 @@
 import json
-import os
 import subprocess
 from pathlib import Path
+
+from threesixfive.spiders.utils import format_folder_and_file_name
 
 
 def prepare_headers_and_cookies(name):
@@ -20,8 +21,7 @@ def prepare_headers_and_cookies(name):
             headers[key] = value
 
     location = "secrets"
-    if not os.path.isdir(location):
-        os.mkdir(location)
+    Path(location).mkdir(parents=True, exist_ok=True)
 
     secrets = {"headers": headers, "cookies": cookies}
     with open(f"{location}/{name}.json", "w") as writer:
@@ -30,7 +30,10 @@ def prepare_headers_and_cookies(name):
 
 def run_spider(spider_name):
     location = f"logs/{spider_name}"
+    location = format_folder_and_file_name(location)
     Path(f"{location}").mkdir(parents=True, exist_ok=True)
+
     logger = f"{location}/{spider_name}-logs.log"
     command = f"scrapy crawl {spider_name} 2>&1 | tee {logger}"
+
     subprocess.run(command, shell=True)

@@ -3,7 +3,7 @@ from pathlib import Path
 
 import scrapy
 
-from threesixfive.spiders.utils import read_secrets
+from threesixfive.spiders.utils import format_folder_and_file_name, read_secrets
 
 
 class VideosSpider(scrapy.Spider):
@@ -38,6 +38,9 @@ class VideosSpider(scrapy.Spider):
         lesson_name = kwargs["lesson_name"]
         data = response.body
 
+        course_name = format_folder_and_file_name(course_name)
+        chapter_name = format_folder_and_file_name(chapter_name)
+        lesson_name = format_folder_and_file_name(lesson_name)
         location = f"data/videos/{course_name}/{chapter_name}"
         Path(location).mkdir(parents=True, exist_ok=True)
 
