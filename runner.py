@@ -5,6 +5,7 @@ modules = [
     "lessons",
     "playbacks",
     "videos",
+    "subtitles",
 ]
 
 for module in modules:
