@@ -44,9 +44,8 @@ class PlaybacksSpider(scrapy.Spider):
 
         subtitle = None
         for item in data["text_tracks"]:
-            if item["id"]:
-                link = item["src"]
-                subtitle = link.replace("http://", "https://") if link else None
+            if item["src"].startswith("https://"):
+                subtitle = item["src"]
 
             if subtitle:
                 break
